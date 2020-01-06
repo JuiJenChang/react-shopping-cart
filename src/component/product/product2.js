@@ -2,30 +2,29 @@ import React, { Component } from 'react';
 import { FaTimes } from "react-icons/fa";
 import './product.css';
 
-class Product extends Component {
+class Product2 extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
             items: [
                 {
-                    image: "https://stockx.imgix.net/products/streetwear/Supreme-Bandana-Box-Logo-Tee-White.jpg?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1576782381&w=1000",
-                    name: "Box Logo Tee Grey",
-                    price: "355.15",
+                    image: "https://stockx.imgix.net/products/streetwear/Supreme-Bandana-Box-Logo-Hooded-Sweatshirt-Heather-Grey.jpg?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1576157450&w=1000",
+                    name: "Box Logo Hoodie Grey",
+                    price: "761.10",
                     quantity: 1,
                 }
             ],
         }
     }
-
     addQuantity = () => {
         const add = this.state.items[0].quantity + 1;
-        const newPrice = parseFloat(this.state.items[0].price) + 355.15;
+        const newPrice = parseFloat(this.state.items[0].price) + 761.10;
         this.setState({
             items: [
                 {
-                    image: "https://stockx.imgix.net/products/streetwear/Supreme-Bandana-Box-Logo-Tee-White.jpg?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1576782381&w=1000",
-                    name: "Box Logo Tee Grey",
+                    image: "https://stockx.imgix.net/products/streetwear/Supreme-Bandana-Box-Logo-Hooded-Sweatshirt-Heather-Grey.jpg?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1576157450&w=1000",
+                    name: "Box Logo Hoodie Grey",
                     price: newPrice.toFixed(2),
                     quantity: add,
                 }
@@ -35,19 +34,18 @@ class Product extends Component {
 
     minusQuantity = () => {
         const minus = this.state.items[0].quantity - 1;
-        const newPrice = parseFloat(this.state.items[0].price) - 355.15;
+        const newPrice = parseFloat(this.state.items[0].price) - 761.10;
         this.setState({
             items: [
                 {
-                    image: "https://stockx.imgix.net/products/streetwear/Supreme-Bandana-Box-Logo-Tee-White.jpg?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1576782381&w=1000",
-                    name: "Box Logo Tee Grey",
+                    image: "https://stockx.imgix.net/products/streetwear/Supreme-Bandana-Box-Logo-Hooded-Sweatshirt-Heather-Grey.jpg?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1576157450&w=1000",
+                    name: "Box Logo Hoodie Grey",
                     price: newPrice.toFixed(2),
                     quantity: minus,
                 }
             ]
         })
     }
-
     render() {
         return (
             <div>
@@ -80,4 +78,4 @@ class Product extends Component {
     }
 }
 
-export default Product;
+export default Product2;

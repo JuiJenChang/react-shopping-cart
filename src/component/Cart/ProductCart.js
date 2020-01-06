@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './ProductCart.css';
 import { TiShoppingCart } from "react-icons/ti";
-import { FaTimes } from "react-icons/fa";
+import Product from '../product/product';
+import Product2 from '../product/product2';
 
 class ProductCart extends Component {
     constructor(props) {
@@ -9,6 +10,7 @@ class ProductCart extends Component {
 
         this.state = {
             open: false,
+            total: "1116.25",
         }
     }
 
@@ -36,30 +38,8 @@ class ProductCart extends Component {
                                 <div className="inside-product-total" >{this.props.amount}</div>
                                 <span>Cart</span>
                             </div>
-                            {this.props.items.map((item, i) =>
-                                <li key={i} className="cart-item" >
-                                    <img src={item.image} className="cart-img" />
-                                    <div>
-                                        <div className="cart-item-name" >
-                                            <h4>{item.name}</h4>
-                                        </div>
-                                        <div className="cart-item-quantity" >
-                                            Quantity: {this.props.quantity}
-                                        </div>
-                                    </div>
-                                    <div className="cart-item-change" >
-                                        <FaTimes className="cart-item-cancel" onClick={() => this.props.deleteProduct(i)} />
-                                        <div className="cart-item-price" >
-                                            $ {item.price}
-                                        </div>
-                                        <div className="cart-add-minus" >
-                                            <div className="cart-item-minus" onClick={this.props.minusQuantity} >-</div>
-                                            <div className="cart-item-add" onClick={this.props.addQuantity} >+</div>
-                                        </div>
-                                    </div>
-                                </li>
-                            )
-                            }
+                            <Product />
+                            <Product2 />
                             <div className="cart-footer" >
                                 <div className="cart-total" >
                                     <span className="cart-footer-span1" >SUBTOTAL</span>
