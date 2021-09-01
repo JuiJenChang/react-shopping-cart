@@ -8,6 +8,7 @@ import {
 import styled from "styled-components";
 import Products from './pages/products';
 import ProductDetail from './pages/productDetail';
+import Cart from './pages/cart';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Main>
         <Route path="/pages/products" component={Products} />
         <Route path="/pages/ProductDetail" component={ProductDetail} />
+        <Route path="/pages/Cart" component={Cart} />
       </Main>
     </div>
   );
