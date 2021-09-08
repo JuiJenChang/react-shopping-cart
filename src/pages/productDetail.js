@@ -4,8 +4,10 @@ import {
   Switch,
   Route,
   Link,
-  useLocation
+  useLocation,
+  useHistory
 } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 import styled from "styled-components";
 
 const ProductDetail = () => {
@@ -23,26 +25,30 @@ const ProductDetail = () => {
     "29",
     "29.5",
   ]
+  let history = useHistory();
   let location = useLocation();
-  const [size, setSize] = useState('');
+  const dispatch = useDispatch();
+  const [product, setProduct] = useState({});
   
   useEffect(() =>{
     console.log(location.pathname)
     console.log(location.search)
-    console.log(location.state.detail)
+    setProduct(location.state.detail)
   }, [])
 
   const addToCart = e => {
     e.preventDefault();
-    if (size !== "") {
-      alert('123')
+    if (product.size !== "") {
+      dispatch({
+        type: "ADD_TO_CART",
+        payload: product
+      })
+      history.push('/pages/cart')
     } else {
       return
     }
   }
-
-  console.log('xxxxx', size)
-
+  
   return (
     <ProductDetailContainer>
       <ProductImage src={location.state.detail.img} />
@@ -56,7 +62,7 @@ const ProductDetail = () => {
               key={i}
               onClick={(e) =>{
                 e.preventDefault()
-                setSize(item)
+                setProduct({...product, size: item})
               }}
             >
               {item}
