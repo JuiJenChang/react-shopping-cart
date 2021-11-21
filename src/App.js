@@ -3,18 +3,66 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useLocation,
+  useHistory
 } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
 import styled from "styled-components";
 import Products from './pages/products';
 import ProductDetail from './pages/productDetail';
 import Cart from './pages/cart';
+import Login from "./pages/login";
+import Register from "./pages/register";
+import Member from "./pages/member";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { HiOutlineShoppingCart } from "react-icons/hi";
-import { IoPersonOutline } from "react-icons/io5";
+import { makeStyles } from '@material-ui/core/styles';
+import { auth } from './firebase';
+import Routes from "./router/routes"
+import AuthRouter from "./router/authRoute";
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
 
 function App() {
+  const dispatch = useDispatch();
+  let history = useHistory();
+  let location = useLocation();
+  const { pathname } = location;
+  const classes = useStyles();
+  const openLoading = useSelector(state => state.openLoading);
+  const loginStatus = useSelector(state => state.loginStatus);
+
+  const logout = () => {
+    auth.signOut();
+    localStorage.removeItem('userId');
+    localStorage.setItem('loginStatus', false);
+    dispatch({ type: "SET_LOGINSTATUS" });
+    if (pathname === "/pages/member") {
+      history.push('/');
+    };
+    alert('logout successful');
+  }
+
+  const checkLogin = status => {
+    if (status) {
+      logout();
+    } else {
+      history.push('/pages/login');
+    }
+  }
+
   return (
     <div>
+      <Backdrop className={classes.backdrop} open={openLoading}>
+        <CircularProgress />
+      </Backdrop>
       <Header>
         <ul>
           <li>
@@ -24,22 +72,29 @@ function App() {
             <Link to="/pages/products">Products</Link>
           </li>
           <li>
-            <Link to="/">Member</Link>
+            <Link to="/pages/member">Member</Link>
           </li>
         </ul>
         <IconContent>
-          <Link to="/pages/Cart">
+          <Link to="/pages/cart">
             <HiOutlineShoppingCart style={iconStyle} />
           </Link>
-          <Link to="/">
-            <IoPersonOutline style={iconStyle} />
-          </Link>
+          <LoginStatus onClick={e => {
+            e.preventDefault();
+            checkLogin(loginStatus);
+          }}>
+            {loginStatus ? "Sign up" : "Sign in"}
+          </LoginStatus>
         </IconContent>
       </Header>
       <Main>
-        <Route path="/pages/products" component={Products} />
-        <Route path="/pages/ProductDetail" component={ProductDetail} />
-        <Route path="/pages/Cart" component={Cart} />
+        <AuthRouter routes={Routes}/>
+        {/* <Route path="/pages/products" component={Products} />
+        <Route path="/pages/productDetail" component={ProductDetail} />
+        <Route path="/pages/cart" component={Cart} />
+        <Route path="/pages/login" component={Login} />
+        <Route path="/pages/register" component={Register} />
+        <Route path="/pages/member" component={Member} /> */}
       </Main>
     </div>
   );
@@ -67,7 +122,19 @@ const IconContent = styled.div`
     }
   }
 `
-
+const LoginStatus = styled.div`
+  cursor: pointer;
+  border-radius: 10px 10px;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  &:hover {
+    background: #64758E;
+  }
+`
 const Header = styled.header`
   width: 100%;
   height: 80px;

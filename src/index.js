@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 
 const store = createStore(reducer);
+localStorage.setItem('loginStatus', false);
 
 ReactDOM.render(
   <Provider store={store}>

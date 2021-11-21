@@ -14,7 +14,7 @@ const Products = () => {
 
   const RouteToProductDetail = (item) => {
     history.push({
-      pathname: '/pages/ProductDetail',
+      pathname: '/pages/productDetail',
       search: `?id=${item.id}`,
       state: { detail: item }
     })

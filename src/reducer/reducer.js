@@ -1,5 +1,7 @@
 const initState = {
-  cartList: []
+  cartList: [],
+  openLoading: false,
+  loginStatus: JSON.parse(localStorage.loginStatus)
 };
 
 const reducer = (state = initState, action) => {
@@ -12,6 +14,16 @@ const reducer = (state = initState, action) => {
     case "REMOVE_PRODUCT": {
       return {
         cartList: state.cartList.filter(item => item.id !== action.payload.id)
+      }
+    }
+    case "SET_OPENLOADING": {
+      return {
+        openLoading: action.payload
+      }
+    }
+    case "SET_LOGINSTATUS": {
+      return {
+        loginStatus: JSON.parse(localStorage.loginStatus)
       }
     }
     default:

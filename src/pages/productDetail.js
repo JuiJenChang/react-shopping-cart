@@ -31,8 +31,6 @@ const ProductDetail = () => {
   const [product, setProduct] = useState({});
   
   useEffect(() =>{
-    console.log(location.pathname)
-    console.log(location.search)
     setProduct(location.state.detail)
   }, [])
 
