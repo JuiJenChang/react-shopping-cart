@@ -12,9 +12,9 @@ import { FaTrashAlt } from 'react-icons/fa';
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const cartList = useSelector(state => state.cartList);
+  const cartList = useSelector(state => state.cart);
   const [total, setTotal] = useState(0);
-  const newTotal = cartList.reduce((acc, curr) => {
+  const newTotal = cartList && cartList.reduce((acc, curr) => {
     return acc + curr.price;
   }, 0);
 
@@ -29,7 +29,7 @@ const Cart = () => {
     setTotal(newTotal);
   }, [cartList]);
 
-  if (cartList.length === 0) {
+  if (!cartList || cartList.length === 0) {
     return <EmptyCart>
       There are no items in the shopping cart
     </EmptyCart>

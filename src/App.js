@@ -2,19 +2,12 @@ import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
   Link,
   useLocation,
   useHistory
 } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import styled from "styled-components";
-import Products from './pages/products';
-import ProductDetail from './pages/productDetail';
-import Cart from './pages/cart';
-import Login from "./pages/login";
-import Register from "./pages/register";
-import Member from "./pages/member";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { HiOutlineShoppingCart } from "react-icons/hi";
@@ -36,14 +29,14 @@ function App() {
   let location = useLocation();
   const { pathname } = location;
   const classes = useStyles();
-  const openLoading = useSelector(state => state.openLoading);
+  const openLoading = useSelector(state => state.loadingStatus);
   const loginStatus = useSelector(state => state.loginStatus);
 
   const logout = () => {
     auth.signOut();
     localStorage.removeItem('userId');
-    localStorage.setItem('loginStatus', false);
-    dispatch({ type: "SET_LOGINSTATUS" });
+    // localStorage.setItem('loginStatus', false);
+    dispatch({ type: "SET_LOGINSTATUS", payload: false });
     if (pathname === "/pages/member") {
       history.push('/');
     };

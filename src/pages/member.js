@@ -40,7 +40,6 @@ const Member = () => {
     e.preventDefault();
   };
 
-  console.log('999', userInfo)
   return (
     <ProfileContainer>
       <ProfileForm>

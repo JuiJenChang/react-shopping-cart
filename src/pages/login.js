@@ -14,18 +14,18 @@ import { auth } from '../firebase';
 const Login = () => {
   const dispatch = useDispatch();
   let history = useHistory();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('test123@gmail.com');
+  const [password, setPassword] = useState('qwer1234');
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const signIn = async (email, password) => {
     auth.signInWithEmailAndPassword(email, password).then(res => {
       localStorage.setItem('userId', res.user.uid);
-      localStorage.setItem('loginStatus', true);
+      // localStorage.setItem('loginStatus', true);
       setEmail('');
       setPassword('');
-      dispatch({ type: "SET_LOGINSTATUS" });
+      dispatch({ type: "SET_LOGINSTATUS", payload: true });
       history.push('/');
     }).catch(err => {
       console.log(err)

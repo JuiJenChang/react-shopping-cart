@@ -2,14 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import reducer from "./reducer/reducer";
+import rootReducer from "./reducers";
 import { ResetStyle } from './styles/globalStyle';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 
-const store = createStore(reducer);
-localStorage.setItem('loginStatus', false);
+const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={store}>
