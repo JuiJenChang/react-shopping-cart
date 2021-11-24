@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useHistory
 } from "react-router-dom";
 import styled from "styled-components";
@@ -12,7 +8,7 @@ import { productList } from '../utils/productList';
 const Products = () => {
   let history = useHistory();
 
-  const RouteToProductDetail = (item) => {
+  const linkToProductDetail = (item) => {
     history.push({
       pathname: '/pages/productDetail',
       search: `?id=${item.id}`,
@@ -25,7 +21,7 @@ const Products = () => {
       {productList.map((item, i) => (
         <Card key={i}>
           <CardContent>
-            <img src={item.img} />
+            <img src={item.img} alt=""/>
             <div>
               <h3>{item.name}</h3>
               <span>$ {item.price}</span>
@@ -34,7 +30,7 @@ const Products = () => {
           <CardFooter>
             <button onClick={(e) => {
               e.preventDefault();
-              RouteToProductDetail(item)
+              linkToProductDetail(item)
             }}>PICK</button>
           </CardFooter>
         </Card>

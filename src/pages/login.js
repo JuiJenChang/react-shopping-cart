@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useHistory
 } from "react-router-dom";
 import { useDispatch } from 'react-redux';
@@ -14,8 +11,8 @@ import { auth } from '../firebase';
 const Login = () => {
   const dispatch = useDispatch();
   let history = useHistory();
-  const [email, setEmail] = useState('test123@gmail.com');
-  const [password, setPassword] = useState('qwer1234');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
@@ -56,7 +53,7 @@ const Login = () => {
     <LoginContainer>
       <LoginContent>
         <h2>LOGIN</h2>
-        <form autoComplete="off" onSubmit={handleSubmit}>
+        <LoginForm autoComplete="off" onSubmit={handleSubmit}>
           <TextField
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -75,10 +72,10 @@ const Login = () => {
             helperText={passwordError ? 'Required' : ''}
           />
           <Formfooter>
-            <button type="button" onClick={linkToRegister}>REGISTER</button>
             <button type="submit">LOGIN</button>
+            <button type="button" onClick={linkToRegister}>REGISTER</button>
           </Formfooter>
-        </form>
+        </LoginForm>
       </LoginContent>
     </LoginContainer>
   );
@@ -96,6 +93,22 @@ const LoginContent = styled.div`
   width: 50%;
   height: 50%;
   background: #fff;
+  padding: 1rem 1rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h2 {
+    font-weight: 700;
+    font-size: 24px;
+  }
+`
+const LoginForm = styled.form`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 `
 const CardContent = styled.div`
   img {
@@ -116,15 +129,17 @@ const CardContent = styled.div`
 const Formfooter = styled.div`
   width: 100%;
   display: flex;
-  justify-content: flex-end;
-  padding-bottom: 10px;
-  padding-right: 10px;
+  justify-content: space-evenly;
   button{
     cursor: pointer;
-    color: #3D4858;
-    background: #fff;
-    border-radius: 5px;
-    width: 30%;
-    height: 30px;
+    color: #fff;
+    background: #3D4858;
+    border-radius: 10px;
+    width: 15%;
+    height: 40px;
+    &:hover {
+      color: #3D4858;
+      background: #eeeeee;
+    }
   }
 `

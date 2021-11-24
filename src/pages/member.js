@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory
-} from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import styled from "styled-components";
-import { db, auth } from '../firebase';
+import { db } from '../firebase';
 
 const Member = () => {
-  let history = useHistory();
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
 

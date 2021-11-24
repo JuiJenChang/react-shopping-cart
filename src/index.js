@@ -7,6 +7,7 @@ import { ResetStyle } from './styles/globalStyle';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = createStore(rootReducer);
 

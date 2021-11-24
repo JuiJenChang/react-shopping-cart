@@ -1,18 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useLocation
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import styled from "styled-components";
 import { FaTrashAlt } from 'react-icons/fa';
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const cartList = useSelector(state => state.cart);
+  const cartList = useSelector(state => state.cartReducer);
   const [total, setTotal] = useState(0);
   const newTotal = cartList && cartList.reduce((acc, curr) => {
     return acc + curr.price;
@@ -38,7 +31,7 @@ const Cart = () => {
       <CartContainer>
         {cartList.map((item, i) => (
           <Content key={i}>
-            <img src={item.img} />
+            <img src={item.img} alt="" />
             <Detail>
               <span>SIZE：{item.size} CM</span>
               <div>

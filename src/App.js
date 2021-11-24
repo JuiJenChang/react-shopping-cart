@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
   Link,
   useLocation,
   useHistory
@@ -29,13 +27,12 @@ function App() {
   let location = useLocation();
   const { pathname } = location;
   const classes = useStyles();
-  const openLoading = useSelector(state => state.loadingStatus);
-  const loginStatus = useSelector(state => state.loginStatus);
+  const openLoading = useSelector(state => state.loadingStatusReducer);
+  const loginStatus = useSelector(state => state.loginStatusReducer);
 
   const logout = () => {
     auth.signOut();
     localStorage.removeItem('userId');
-    // localStorage.setItem('loginStatus', false);
     dispatch({ type: "SET_LOGINSTATUS", payload: false });
     if (pathname === "/pages/member") {
       history.push('/');
@@ -59,7 +56,7 @@ function App() {
       <Header>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/pages/home">Home</Link>
           </li>
           <li>
             <Link to="/pages/products">Products</Link>
@@ -82,12 +79,6 @@ function App() {
       </Header>
       <Main>
         <AuthRouter routes={Routes}/>
-        {/* <Route path="/pages/products" component={Products} />
-        <Route path="/pages/productDetail" component={ProductDetail} />
-        <Route path="/pages/cart" component={Cart} />
-        <Route path="/pages/login" component={Login} />
-        <Route path="/pages/register" component={Register} />
-        <Route path="/pages/member" component={Member} /> */}
       </Main>
     </div>
   );

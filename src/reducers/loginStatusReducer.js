@@ -1,4 +1,4 @@
-export default function loginStatus(state = false, action) {
+export default function loginStatusReducer(state = false, action) {
   localStorage.setItem('loginStatus', action.payload)
   switch (action.type) {
     case "SET_LOGINSTATUS":

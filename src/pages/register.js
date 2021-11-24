@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useHistory
 } from "react-router-dom";
 import { useDispatch } from 'react-redux';
@@ -128,7 +125,10 @@ const Register = () => {
           />
           <Formfooter>
             <button type="submit">SUBMIT</button>
-            <button>CANCEL</button>
+            <button type="button" onClick={e => {
+              e.preventDefault();
+              history.push('/pages/login')
+            }}>CANCEL</button>
           </Formfooter>
         </RegisterForm>
       </RegisterContent>
@@ -153,6 +153,10 @@ const RegisterContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  h2 {
+    font-weight: 700;
+    font-size: 24px;
+  }
 `
 const RegisterForm = styled.form`
   width: 100%;

@@ -1,13 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useLocation,
   useHistory
 } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from "styled-components";
 
 const ProductDetail = () => {

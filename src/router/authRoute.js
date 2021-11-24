@@ -1,17 +1,14 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
   useLocation,
-  useHistory,
   Redirect
 } from "react-router-dom";
 import styled from "styled-components";
 
 const AuthRouter = (props) => {
   const { routes } = props
-  let history = useHistory();
   let location = useLocation();
   const { pathname } = location;
   const userId = localStorage.getItem('userId')
@@ -26,7 +23,7 @@ const AuthRouter = (props) => {
   }
   if (userId) {
     if (pathname === '/pages/login') {
-      return <Redirect to="/" />
+      return <Redirect to="/pages/home" />
     } else {
       if (targetRoutes) {
         return (
@@ -36,9 +33,9 @@ const AuthRouter = (props) => {
         )
       } else {
         return (
-          <ViewContainer>
-            123
-          </ViewContainer>
+          <Route exact path="*">
+            <Redirect to="/pages/home" />
+          </Route>
         )
       }
     }
@@ -48,9 +45,9 @@ const AuthRouter = (props) => {
       return <Redirect to="/pages/login" />
     } else {
       return (
-        <ViewContainer>
-          123
-        </ViewContainer>
+        <Route exact path="*">
+          <Redirect to="/pages/home" />
+        </Route>
       )
     }
   }

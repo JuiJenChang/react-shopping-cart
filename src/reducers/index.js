@@ -1,10 +1,10 @@
 import { combineReducers } from "redux"
-import cart from "./cart"
-import loadingStatus from "./loadingStatus"
-import loginStatus from "./loginStatus"
+import cartReducer from "./cartReducer"
+import loadingStatusReducer from "./loadingStatusReducer"
+import loginStatusReducer from "./loginStatusReducer"
 
 export default combineReducers({
-  cart,
-  loadingStatus,
-  loginStatus
+  cartReducer,
+  loadingStatusReducer,
+  loginStatusReducer
 })
