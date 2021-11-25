@@ -28,20 +28,21 @@ function App() {
   const { pathname } = location;
   const classes = useStyles();
   const openLoading = useSelector(state => state.loadingStatusReducer);
-  const loginStatus = useSelector(state => state.loginStatusReducer);
+  const userId = localStorage.userId;
 
   const logout = () => {
+    dispatch({ type: "SET_OPENLOADING", payload: true })
     auth.signOut();
-    localStorage.removeItem('userId');
-    dispatch({ type: "SET_LOGINSTATUS", payload: false });
+    localStorage.clear();
     if (pathname === "/pages/member") {
-      history.push('/');
+      history.push('/pages/home');
     };
     alert('logout successful');
+    dispatch({ type: "SET_OPENLOADING", payload: false })
   }
 
-  const checkLogin = status => {
-    if (status) {
+  const checkLogin = userId => {
+    if (userId) {
       logout();
     } else {
       history.push('/pages/login');
@@ -71,9 +72,9 @@ function App() {
           </Link>
           <LoginStatus onClick={e => {
             e.preventDefault();
-            checkLogin(loginStatus);
+            checkLogin(userId);
           }}>
-            {loginStatus ? "Sign up" : "Sign in"}
+            {userId ? "Sign up" : "Sign in"}
           </LoginStatus>
         </IconContent>
       </Header>

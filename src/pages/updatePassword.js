@@ -8,91 +8,92 @@ import styled from "styled-components";
 import TextField from '@material-ui/core/TextField';
 import { auth } from '../firebase';
 
-const Login = () => {
-  const dispatch = useDispatch();
+const UpdatePassword = () => {
   let history = useHistory();
-  const [email, setEmail] = useState('');
+  const dispatch = useDispatch();
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState(false);
+  const [checkPassword, setCheckPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+  const [checkPasswordError, setCheckPasswordError] = useState(false);
 
-  const signIn = async (email, password) => {
+  const update = (password) => {
     dispatch({ type: "SET_OPENLOADING", payload: true })
-    auth.signInWithEmailAndPassword(email, password).then(res => {
-      localStorage.setItem('userId', res.user.uid);
-      setEmail('');
-      setPassword('');
+    auth.currentUser.updatePassword(password).then(() => {
+      auth.signOut();
+      localStorage.clear();
       history.push('/pages/home');
-    }).catch(err => {
-      alert('incorrect e-mail or password')
-      console.log(err)
-    })
-    .finally(() => {
+      alert('update successful, please login again');
+    }).catch((err) => {
+      console.error(err)
+    }).finally(() => {
       dispatch({ type: "SET_OPENLOADING", payload: false })
     })
-  }
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
-    setEmailError(false)
-    setPasswordError(false)
-    if (email === '') {
-      setEmailError(true);
-      return;
-    }
+    setPasswordError(false);
+    setCheckPasswordError(false);
     if (password === '') {
       setPasswordError(true);
       return;
+    };
+    if (checkPassword === '') {
+      setCheckPasswordError(true);
+      return;
+    };
+    if (password !== checkPassword) {
+      alert('the two passwords entered are different')
+    } else {
+      update(password);
     }
-    signIn(email, password);
   };
 
-  const linkToRegister = e => {
-    e.preventDefault();
-    history.push('/pages/register')
-  }
-
   return (
-    <LoginContainer>
-      <LoginContent>
-        <h2>LOGIN</h2>
-        <LoginForm autoComplete="off" onSubmit={handleSubmit}>
-          <TextField
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            label="E-MAIL"
-            fullWidth
-            error={emailError}
-            helperText={emailError ? 'Required' : ''}
-          />
+    <EditContainer>
+      <EditContent>
+        <h2>UPDATE PASSWORD</h2>
+        <EditForm autoComplete="off" onSubmit={handleSubmit}>
           <TextField
             value={password}
             onChange={e => setPassword(e.target.value)}
-            label="Password"
+            label="PASSWORD"
             type="password"
             fullWidth
             error={passwordError}
             helperText={passwordError ? 'Required' : ''}
           />
+          <TextField
+            value={checkPassword}
+            onChange={e => setCheckPassword(e.target.value)}
+            label="CHECK PASSWORD"
+            type="password"
+            fullWidth
+            error={checkPasswordError}
+            helperText={checkPasswordError ? 'Required' : ''}
+          />
           <Formfooter>
-            <button type="submit">LOGIN</button>
-            <button type="button" onClick={linkToRegister}>REGISTER</button>
+            <button type="submit">UPDATE</button>
+            <button type="button" onClick={e => {
+              e.preventDefault();
+              history.goBack();
+            }}>CANCEL</button>
           </Formfooter>
-        </LoginForm>
-      </LoginContent>
-    </LoginContainer>
+        </EditForm>
+      </EditContent>
+    </EditContainer>
   );
 }
 
-export default Login;
+export default UpdatePassword;
 
-const LoginContainer = styled.div`
+const EditContainer = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 `
-const LoginContent = styled.div`
+const EditContent = styled.div`
   width: 50%;
   height: 50%;
   background: #fff;
@@ -106,28 +107,12 @@ const LoginContent = styled.div`
     font-size: 24px;
   }
 `
-const LoginForm = styled.form`
+const EditForm = styled.form`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-`
-const CardContent = styled.div`
-  img {
-    width: 100%;
-    height: 250px;
-    border-radius: 5px 5px 0 0;
-  }
-  div {
-    display: flex;
-    flex-direction: column;
-    color: #fff;
-    padding: 10px;
-    h3 {
-      margin-bottom: 10px;
-    }
-  }
 `
 const Formfooter = styled.div`
   width: 100%;

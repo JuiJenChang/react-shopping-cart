@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import styled from "styled-components";
 import { db } from '../firebase';
+import { FiEdit } from 'react-icons/fi';
+import {
+  BrowserRouter as Router,
+  useHistory
+} from "react-router-dom";
 
 const Member = () => {
+  let history = useHistory();
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
 
@@ -17,10 +23,12 @@ const Member = () => {
         .get();
       const data = query.docs[0].data();
       setUserInfo(data)
-      dispatch({ type: "SET_OPENLOADING", payload: false })
+      localStorage.setItem("dataId", query.docs[0].id)
     } catch(err) {
-      dispatch({ type: "SET_OPENLOADING", payload: false })
       console.log(err)
+    }
+    finally {
+      dispatch({ type: "SET_OPENLOADING", payload: false })
     }
   }
 
@@ -28,15 +36,25 @@ const Member = () => {
     getUserInfo();
   }, [])
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const linkToEditProfile = () => {
+    history.push({
+      pathname: '/pages/editProfile',
+      state: { data: userInfo }
+    })
+  };
+
+  const linkToUpdatePassword = () => {
+    history.push({
+      pathname: '/pages/updatePassword',
+      state: { data: userInfo }
+    })
   };
 
   return (
     <ProfileContainer>
       <ProfileForm>
         <h2>MEMBER PROFILE</h2>
-        <ProfileContent autoComplete="off" onSubmit={handleSubmit}>
+        <ProfileContent>
           <ProfileItem>
             <h4>USERNAME : </h4>
             <span>{userInfo.username}</span>
@@ -54,10 +72,16 @@ const Member = () => {
             <span>{userInfo.address}</span>
           </ProfileItem>
         </ProfileContent>
-        {/* <Formfooter>
-          <button type="submit">SUBMIT</button>
-          <button>CANCEL</button>
-        </Formfooter> */}
+        <Formfooter>
+          <EditContent onClick={linkToEditProfile}>
+            <FiEdit />
+            <span>PROFILE</span>
+          </EditContent>
+          <EditContent onClick={linkToUpdatePassword}>
+            <FiEdit />
+            <span>PASSWORD</span>
+          </EditContent>
+        </Formfooter>
       </ProfileForm>
     </ProfileContainer>
   );
@@ -73,7 +97,7 @@ const ProfileContainer = styled.div`
 `
 const ProfileForm = styled.div`
   width: 50%;
-  height: 50%;
+  height: 60%;
   background: #fff;
   padding: 1rem 1rem;
   border-radius: 20px;
@@ -106,21 +130,24 @@ const ProfileItem = styled.div`
     margin-left: 10px;
   }
 `
-
 const Formfooter = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-evenly;
-  button{
-    cursor: pointer;
-    color: #fff;
-    background: #3D4858;
-    border-radius: 10px;
-    width: 15%;
-    height: 40px;
-    &:hover {
-      color: #3D4858;
-      background: #eeeeee;
-    }
+`
+const EditContent = styled.div`
+  width: 10rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  cursor: pointer;
+  color: #fff;
+  background: #3D4858;
+  border-radius: 10px;
+  width: 15%;
+  height: 40px;
+  &:hover {
+    color: #3D4858;
+    background: #eeeeee;
   }
 `

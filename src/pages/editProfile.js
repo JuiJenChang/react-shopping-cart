@@ -1,68 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
-  useHistory
+  useHistory,
+  useLocation,
 } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import styled from "styled-components";
 import TextField from '@material-ui/core/TextField';
-import { db, auth } from '../firebase';
+import { db } from '../firebase';
 
-const Register = () => {
+const EditProfile = () => {
   let history = useHistory();
+  let location = useLocation();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
   const [UsernameError, setUsernameError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
   const [addressError, setAddressError] = useState(false);
+  const dataId = localStorage.dataId;
 
-  const register = async (email, password, username, phone, address) => {
+  const updateProfile = async (username, phone, address) => {
     dispatch({ type: "SET_OPENLOADING", payload: true })
     try {
-      const res = await auth.createUserWithEmailAndPassword(email, password);
-      const user = res.user;
-      await db.collection('users').add({
-        uid: user.uid,
-        email,
-        username,
-        phone,
-        address
-      })
-      setEmail('');
-      setPassword('');
+      await db.collection('users')
+        .doc(dataId)
+        .update({
+          username: username,
+          phone: phone,
+          address: address
+        })
       setUsername('');
       setPhone('');
       setAddress('');
-      history.push('/pages/login')
+      history.push('/pages/member')
     } catch(err) {
       console.error(err)
-    }
-    finally {
+    } finally {
       dispatch({ type: "SET_OPENLOADING", payload: false })
     }
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    setEmailError(false);
-    setPasswordError(false);
     setUsernameError(false);
     setPhoneError(false);
     setAddressError(false);
-    if (email === '') {
-      setEmailError(true);
-      return;
-    };
-    if (password === '') {
-      setPasswordError(true);
-      return;
-    };
     if (username === '') {
       setUsernameError(true);
       return;
@@ -75,31 +59,20 @@ const Register = () => {
       setAddressError(true);
       return;
     };
-    register(email, password, username, phone, address);
+    updateProfile(username, phone, address);
   };
 
+  useEffect(() =>{
+    setUsername(location.state.data.username);
+    setPhone(location.state.data.phone);
+    setAddress(location.state.data.address);
+  }, [])
+
   return (
-    <RegisterContainer>
-      <RegisterContent>
-        <h2>REGISTER</h2>
-        <RegisterForm autoComplete="off" onSubmit={handleSubmit}>
-          <TextField
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            label="E-MAIL"
-            fullWidth
-            error={emailError}
-            helperText={emailError ? 'Required' : ''}
-          />
-          <TextField
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            label="PASSWORD"
-            type="password"
-            fullWidth
-            error={passwordError}
-            helperText={passwordError ? 'Required' : ''}
-          />
+    <EditContainer>
+      <EditContent>
+        <h2>EDIT PROFILE</h2>
+        <EditForm autoComplete="off" onSubmit={handleSubmit}>
           <TextField
             value={username}
             onChange={e => setUsername(e.target.value)}
@@ -125,29 +98,29 @@ const Register = () => {
             helperText={addressError ? 'Required' : ''}
           />
           <Formfooter>
-            <button type="submit">SUBMIT</button>
+            <button type="submit">UPDATE</button>
             <button type="button" onClick={e => {
               e.preventDefault();
-              history.push('/pages/login')
+              history.goBack();
             }}>CANCEL</button>
           </Formfooter>
-        </RegisterForm>
-      </RegisterContent>
-    </RegisterContainer>
+        </EditForm>
+      </EditContent>
+    </EditContainer>
   );
 }
 
-export default Register;
+export default EditProfile;
 
-const RegisterContainer = styled.div`
+const EditContainer = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 `
-const RegisterContent = styled.div`
+const EditContent = styled.div`
   width: 50%;
-  height: 70%;
+  height: 60%;
   background: #fff;
   padding: 1rem 1rem;
   border-radius: 20px;
@@ -159,7 +132,7 @@ const RegisterContent = styled.div`
     font-size: 24px;
   }
 `
-const RegisterForm = styled.form`
+const EditForm = styled.form`
   width: 100%;
   height: 100%;
   display: flex;
